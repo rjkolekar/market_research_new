@@ -3,9 +3,6 @@ import { Link } from "react-router-dom";
 import { EditorState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg"; // Import Draft.js Editor
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css"; // Import Draft.js styles
-// import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-// import CKEditor from '@ckeditor/ckeditor5-react';
-// import { EasyImage } from '@ckeditor/ckeditor5-easy-image';
 
 const AddReportForm = () => {
   const [editorStates, setEditorStates] = useState({}); // State variable to manage editor states
@@ -14,8 +11,40 @@ const AddReportForm = () => {
     EditorState.createEmpty()
   );
   
-  const [publishDate, setPublishDate] = useState("");
-  const [mounted, setMounted] = useState(true);
+  const [authors, setAuthors] = useState([]);
+  const [continents, setContinents] = useState([]);
+  const [errors, setErrors] = useState({});
+  useEffect(() => {
+    fetchAuthors();
+    fetchContinents();
+  }, []);
+
+  const fetchAuthors = async () => {
+    try {
+      const response = await fetch("http://localhost:8000/api/v1/reports");
+      if (!response.ok) {
+        throw new Error("Failed to fetch authors");
+      }
+      const data = await response.json();
+      setAuthors(data.authors);
+    } catch (error) {
+      console.error("Error fetching authors:", error);
+    }
+  };
+
+  const fetchContinents = async () => {
+    try {
+      const response = await fetch("http://localhost:8000/api/v1/reports");
+      if (!response.ok) {
+        throw new Error("Failed to fetch continents");
+      }
+      const data = await response.json();
+      setContinents(data.continents);
+    } catch (error) {
+      console.error("Error fetching continents:", error);
+    }
+  };
+  
 
 
   const handleChangeEditorState = (newState) => {
@@ -26,19 +55,20 @@ const AddReportForm = () => {
 
  
   
-  const logFormValues = (e) => {
+  const logFormValues = async (e) => {
     e.preventDefault();
 
     const inputFields = document.querySelectorAll("input, select, textarea");
-    const editorFields = document.querySelectorAll(".editorClassName");
     const formValues = {};
 
     inputFields.forEach((field) => {
       formValues[field.name] = field.value;
     });
 
+    // Handle Draft.js editor fields
+    const editorFields = document.querySelectorAll(".editorClassName");
     editorFields.forEach((editor) => {
-      const fieldName = editor.getAttribute("name"); // Get the name attribute
+      const fieldName = editor.getAttribute("name");
       const editorState = editorStates[fieldName];
       if (editorState) {
         const contentState = editorState.getCurrentContent();
@@ -47,9 +77,36 @@ const AddReportForm = () => {
       }
     });
 
-    console.table(formValues);
-    alert("Form submitted successfully!");
+    try {
+      const token = localStorage.getItem('token'); // Assuming you store the token in localStorage
+    
+      const response = await fetch('http://localhost:8000/api/v1/reports/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`, // Include the token in the Authorization header
+        },
+        body: JSON.stringify(formValues),
+      });
+    
+      if (!response.ok) {
+        const responseData = await response.json();
+        setErrors({ message: responseData.message || 'An error occurred' });
+        throw new Error('Network response was not ok');
+      }
+    
+      const responseData = await response.json();
+      console.log('Response from server:', responseData);
+    
+      alert("Form submitted successfully!");
+    } catch (error) {
+      console.error('There was an error submitting the form:', error);
+      alert("There was an error submitting the form. Please try again later.");
+    }
   };
+
+  
+  
 
   return (
     <div className="bg-gray-900 min-h-screen py-12">
@@ -78,10 +135,13 @@ const AddReportForm = () => {
                         name="title"
                         className="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
                       />
+                       {errors.title && (
+        <div className="text-red-500 text-xs mt-1">{errors.message}</div>
+      )}
                     </div>
                     <div>
                       <label
-                        htmlFor="urlKeywords"
+                        htmlFor="url_keywords"
                         className="block text-sm font-semibold mb-2"
                       >
                         URL Keywords
@@ -92,6 +152,9 @@ const AddReportForm = () => {
                         name="url_keywords"
                         className="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
                       />
+                       {errors.url_keywords && (
+        <div className="text-red-500 text-xs mt-1">{errors.message}</div>
+      )}
                     </div>
                   </div>
                   {/* Right Side */}
@@ -108,6 +171,9 @@ const AddReportForm = () => {
                         name="dc_description"
                         className="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
                       ></textarea>
+                       {errors.dc_description && (
+        <div className="text-red-500 text-xs mt-1">{errors.message}</div>
+      )}
                     </div>
                     <div>
                       <label
@@ -121,6 +187,9 @@ const AddReportForm = () => {
                         name="report_display_title"
                         className="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
                       ></textarea>
+                       {errors.report_display_title && (
+        <div className="text-red-500 text-xs mt-1">{errors.message}</div>
+      )}
                     </div>
                   </div>
                 </div>
@@ -143,6 +212,9 @@ const AddReportForm = () => {
                       wrapperClassName="border border-gray-300 rounded p-2"
                       editorClassName="editorClassName"
                     />
+                     {errors.report_description && (
+        <div className="text-red-500 text-xs mt-1">{errors.message}</div>
+      )}
                     <p className="text-sm text-gray-600 mt-2">
                       Provide a detailed description of your report. Use
                       headings (H1, H2) and bullet points for better
@@ -166,6 +238,9 @@ const AddReportForm = () => {
                       wrapperClassName="border border-gray-300 rounded p-2"
                       editorClassName="editorClassName"
                     />
+                     {errors.table_of_contents && (
+        <div className="text-red-500 text-xs mt-1">{errors.message}</div>
+      )}
                   </div>
     
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-10">
@@ -189,6 +264,9 @@ const AddReportForm = () => {
                         <option value="option2">Option 2</option>
                         <option value="option3">Option 3</option>
                       </select>
+                      {errors.report_type && (
+        <div className="text-red-500 text-xs mt-1">{errors.message}</div>
+      )}
                     </div>
                   </div>
                   {/* Right Side */}
@@ -206,6 +284,9 @@ const AddReportForm = () => {
                         name="related_reports"
                         className="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
                       />
+                       {errors.related_reports && (
+        <div className="text-red-500 text-xs mt-1">{errors.message}</div>
+      )}
                     </div>
 
                     <div>
@@ -221,11 +302,13 @@ const AddReportForm = () => {
                         name="video_link"
                         className="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
                       />
+                       {errors.video_link && (
+        <div className="text-red-500 text-xs mt-1">{errors.message}</div>
+      )}
                     </div>
                   </div>
                 </div>
               </div>
-              between{" "}
             </>
 
             <>
@@ -248,6 +331,9 @@ const AddReportForm = () => {
                     name="meta_description"
                     className="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
                   ></textarea>
+                   {errors.meta_description && (
+        <div className="text-red-500 text-xs mt-1">{errors.message}</div>
+      )}
                 </div>
 
                 {/* Add more additional fields here */}
@@ -267,6 +353,9 @@ const AddReportForm = () => {
                         name="meta_title"
                         className="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
                       />
+                       {errors.meta_title && (
+        <div className="text-red-500 text-xs mt-1">{errors.message}</div>
+      )}
                     </div>
                     <div>
                       <label
@@ -280,6 +369,9 @@ const AddReportForm = () => {
                         name="meta_keywords"
                         className="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
                       ></textarea>
+                       {errors.meta_keywords && (
+        <div className="text-red-500 text-xs mt-1">{errors.message}</div>
+      )}
                     </div>
                   </div>
                   {/* Right Side */}
@@ -297,6 +389,9 @@ const AddReportForm = () => {
                         name="no_of_pages"
                         className="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
                       />
+                       {errors.no_of_pages && (
+        <div className="text-red-500 text-xs mt-1">{errors.message}</div>
+      )}
                     </div>
                     <div>
                       <label
@@ -309,17 +404,19 @@ const AddReportForm = () => {
                         type="date"
                         id="published_date"
                         name="published_date"
-                        value={publishDate}
-                        onChange={(e) => setPublishDate(e.target.value)}
+                        
                         className="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
                       />
+                       {errors.published_date && (
+        <div className="text-red-500 text-xs mt-1">{errors.message}</div>
+      )}
                     </div>
                   </div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
                   {/* Left Side */}
                   <div className="grid grid-cols-1 gap-4 md:col-span-1">
-                    <div>
+                    {/* <div>
                       <label
                         htmlFor="country"
                         className="block text-sm font-semibold mb-2"
@@ -332,49 +429,53 @@ const AddReportForm = () => {
                         name="country"
                         className="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
                       />
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="author"
-                        className="block text-sm font-semibold mb-2"
-                      >
-                        Author
-                      </label>
-                      <select
-                        id="author"
-                        name="author"
-                        className="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
-                      >
-                        {/* Replace the placeholder options with actual options from your data */}
-                        <option value="">Select Author</option>
-                        <option value="author1">Author 1</option>
-                        <option value="author2">Author 2</option>
-                        <option value="author3">Author 3</option>
-                      </select>
-                    </div>
-                  </div>
-                  {/* Right Side */}
-                  <div className="grid grid-cols-1 gap-4 md:col-span-1">
-                    {/* Select Continent Dropdown */}
-                    <div>
-                      <label
-                        htmlFor="continent"
-                        className="block text-sm font-semibold mb-2"
-                      >
-                        Continent
-                      </label>
-                      <select
-                        id="continent"
-                        name="continent"
-                        className="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
-                      >
-                        <option value="Asia">Asia</option>
-                        <option value="Africa">Africa</option>
-                        <option value="North America">North America</option>
-                        {/* Add more options as needed */}
-                      </select>
-                    </div>
+                       {errors.country && (
+        <div className="text-red-500 text-xs mt-1">{errors.message}</div>
+      )}
+                    </div> */}
+                     {/* Author Dropdown */}
+      <div>
+        <label htmlFor="author" className="block text-sm font-semibold mb-2">
+          Author
+        </label>
+        <select
+          id="author"
+          name="author"
+          className="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
+        >
+          <option value="">Select Author</option>
+          {authors.map((author) => (
+            <option key={author.id} value={author.id}>
+              {author.name}
+            </option>
+          ))}
+        </select>
+        {errors.author && (
+        <div className="text-red-500 text-xs mt-1">{errors.message}</div>
+      )}
+      </div>
 
+      {/* Continent Dropdown */}
+      <div>
+        <label htmlFor="continent" className="block text-sm font-semibold mb-2">
+          Continent
+        </label>
+        <select
+          id="continent"
+          name="continent"
+          className="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
+        >
+          <option value="">Select Continent</option>
+          {continents.map((continent) => (
+            <option key={continent.id} value={continent.name}>
+              {continent.name}
+            </option>
+          ))}
+        </select>
+        {errors.continent && (
+        <div className="text-red-500 text-xs mt-1">{errors.message}</div>
+      )}
+      </div>
                     {/* Images Input Field */}
                     <div>
                       <label
@@ -387,10 +488,12 @@ const AddReportForm = () => {
                         type="file"
                         id="images"
                         name="images"
-                        value={publishDate}
-                        onChange={(e) => setPublishDate(e.target.value)}
+                        
                         className="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
                       />
+                       {errors.images && (
+        <div className="text-red-500 text-xs mt-1">{errors.message}</div>
+      )}
                     </div>
                   </div>
                 </div>
@@ -412,6 +515,9 @@ const AddReportForm = () => {
                         step="0.01"
                         className="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
                       />
+                       {errors.single_user_pdf_price && (
+        <div className="text-red-500 text-xs mt-1">{errors.message}</div>
+      )}
                     </div>
                     <div>
                       <label
@@ -428,6 +534,9 @@ const AddReportForm = () => {
                         step="0.01"
                         className="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
                       />
+                       {errors.enterprise_pdf_price && (
+        <div className="text-red-500 text-xs mt-1">{errors.message}</div>
+      )}
                     </div>
                   </div>
                   {/* Right Side */}
@@ -447,6 +556,9 @@ const AddReportForm = () => {
                         step="0.01"
                         className="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
                       />
+                       {errors.five_user_pdf_price && (
+        <div className="text-red-500 text-xs mt-1">{errors.message}</div>
+      )}
                     </div>
                     <div>
                       <label
@@ -461,28 +573,37 @@ const AddReportForm = () => {
                         name="site_pdf_price"
                         min="0"
                         step="0.01"
-                        value={publishDate}
-                        onChange={(e) => setPublishDate(e.target.value)}
+                        
                         className="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
                       />
+                       {errors.site_pdf_price && (
+        <div className="text-red-500 text-xs mt-1">{errors.message}</div>
+      )}
                     </div>
                   </div>
                 </div>
                 <div className="mt-6">
                     <label
-                      htmlFor="description"
+                      htmlFor="add_report_scope"
                       className="block text-sm font-semibold mb-2"
                     >
-                      Add Report Scope
+                      Report Description
                     </label>
                     <Editor
+                       name="add_report_scope"
+                       id="add_report_scope"
                       editorState={editorState}
                       onEditorStateChange={handleChangeEditorState}
                       toolbarClassName="toolbarClassName"
                       wrapperClassName="border border-gray-300 rounded p-2"
                       editorClassName="editorClassName"
                     />
-                    
+                     {errors.add_report_scope && (
+        <div className="text-red-500 text-xs mt-1">{errors.message}</div>
+      )}
+                    <p className="text-sm text-gray-600 mt-2">
+                      Provide a detailed description of your report. 
+                    </p>
                   </div>
                 <div className="flex  mt-4">
                   <button className="bg-green-500 text-white text-sm font-semibold py-2 px-6 rounded-md shadow-md hover:bg-indigo-700 focus:outline-none">

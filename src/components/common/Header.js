@@ -39,7 +39,7 @@ export default function Example() {
         <div className="flex lg:flex-1">
           <Link to="/" className="-m-1.5 p-1.5">
             <span className="sr-only">Your Company</span>
-            <img className="h-12 w-auto" src={logo1} alt="" />
+            <img className="h-10 w-auto" src={logo1} alt="Infinity Market Research" />
           </Link>
         </div>
         <div className="flex lg:hidden">

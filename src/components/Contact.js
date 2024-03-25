@@ -29,21 +29,21 @@ export default function ContactSalesForm() {
             Contact Us for Market Insights
           </h1>
           <p className="text-lg leading-relaxed">
-            Get in Touch with Market Navigator
+            Get in Touch with Infinity Market Research
           </p>
         </div>
       </div>
       <div className="bg-white text-gray-900 py-12">
         <div className="container mx-auto px-4 mb-16">
-          <div className="grid grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
             {/* Contact information */}
             <div>
               <h2 className="text-3xl font-bold mb-4">Contact Us</h2>
               <p className="text-md leading-relaxed">
-                Get in Touch with Market Navigator
+                Get in Touch with Infinity Market Research
               </p>
               <p className=" text-md leading-relaxed">
-                At Market Navigator, we are committed to providing exceptional
+                At Infinity Market Research, we are committed to providing exceptional
                 service and support to our clients. Whether you have inquiries,
                 feedback, or are interested in exploring collaboration
                 opportunities, we're here to assist you every step of the way.
@@ -64,7 +64,7 @@ export default function ContactSalesForm() {
               <p className="text-md leading-relaxed mt-4">
                 <strong>Email Address</strong>
                 <br />
-                info@marketnavigator.com
+                info@infinitymr.com
               </p>
               <p className="text-md leading-relaxed mt-4">
                 We look forward to hearing from you and meeting your needs. Your
@@ -79,6 +79,15 @@ export default function ContactSalesForm() {
                 onSubmit={handleSubmit}
                 className="mx-auto mt-16 max-w-xl sm:mt-2"
               >
+<div className="text-center mb-6 sm:mb-8 md:mb-10 lg:mb-12">
+  <p className="text-lg md:text-xl font-semibold text-gray-900">
+    Let's Connect and Explore Opportunities Together
+  </p>
+  <p className="text-sm md:text-base text-gray-600">
+    Please fill out the form below to get in touch with our sales team.
+  </p>
+</div>
+
                 <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
                   <div>
                     <label
@@ -187,41 +196,42 @@ export default function ContactSalesForm() {
                 </div>
 
                 {/* Agreement switch */}
-                <div className="mt-6 sm:mt-10 flex items-center">
-                  <Switch.Group as="div" className="flex items-center">
-                    <Switch
-                      checked={agreed}
-                      onChange={setAgreed}
-                      className={classNames(
-                        agreed ? "bg-indigo-600" : "bg-gray-200",
-                        "flex w-8 flex-none cursor-pointer rounded-full p-px ring-1 ring-inset ring-gray-900/5 transition-colors duration-200 ease-in-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                      )}
-                    >
-                      <span className="sr-only">Agree to policies</span>
-                      <span
-                        aria-hidden="true"
-                        className={classNames(
-                          agreed ? "translate-x-3.5" : "translate-x-0",
-                          "h-4 w-4 transform rounded-full bg-white shadow-sm ring-1 ring-gray-900/5 transition duration-200 ease-in-out"
-                        )}
-                      />
-                    </Switch>
-                    <Switch.Label className="ml-3 text-sm leading-6 text-gray-600">
-                      By selecting this, you agree to our{" "}
-                      <a href="#" className="font-semibold text-indigo-600">
-                        privacy policy
-                      </a>
-                      .
-                    </Switch.Label>
-                  </Switch.Group>
-                  {/* Submit button */}
-                  <button
-                    type="submit"
-                    className="ml-auto bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-6 rounded-md shadow-md transition duration-300 ease-in-out"
-                  >
-                    Let's Talk
-                  </button>
-                </div>
+                <div className="mt-6 sm:mt-10 flex flex-col sm:flex-row items-center">
+  <Switch.Group as="div" className="flex items-center mb-4 sm:mb-0">
+    <Switch
+      checked={agreed}
+      onChange={setAgreed}
+      className={classNames(
+        agreed ? "bg-indigo-600" : "bg-gray-200",
+        "flex w-8 flex-none cursor-pointer rounded-full p-px ring-1 ring-inset ring-gray-900/5 transition-colors duration-200 ease-in-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+      )}
+    >
+      <span className="sr-only">Agree to policies</span>
+      <span
+        aria-hidden="true"
+        className={classNames(
+          agreed ? "translate-x-3.5" : "translate-x-0",
+          "h-4 w-4 transform rounded-full bg-white shadow-sm ring-1 ring-gray-900/5 transition duration-200 ease-in-out"
+        )}
+      />
+    </Switch>
+    <Switch.Label className="ml-3 text-sm leading-6 text-gray-600">
+      By selecting this, you agree to our{" "}
+      <a href="#" className="font-semibold text-indigo-600">
+        privacy policy
+      </a>
+      .
+    </Switch.Label>
+  </Switch.Group>
+  {/* Submit button */}
+  <button
+    type="submit"
+    className="ml-auto bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-6 rounded-md shadow-md transition duration-300 ease-in-out"
+  >
+    Let's Talk
+  </button>
+</div>
+
               </form>
               {/* Submission success message */}
               {submitted && (
@@ -233,14 +243,16 @@ export default function ContactSalesForm() {
                     We'll reach out to you shortly.
                   </p>
                 </div>
-              )}
+                )}
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+        
         <Stats />
         <Testimonials />
         <OurClients />
-      </div>
-    </>
-  );
-}
+      </>
+    );
+  }
+  
