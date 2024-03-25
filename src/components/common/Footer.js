@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { MailIcon, PhoneIcon } from '@heroicons/react/20/solid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
+import logo1 from "../images/logo1.png"
 
 import { faFacebookF, faTwitter, faInstagram } from '@fortawesome/free-brands-svg-icons';
 
@@ -14,9 +15,9 @@ export default function Footer() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
               <div className="mb-4 lg:mb-0">
               <img
-                className="h-8 w-auto"
-                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                alt=""
+                className="h-14 w-auto"
+                src={logo1} alt="Infinity Market Research"
+                
               />
               </div>
               <div className="sm:col-span-1">
@@ -26,7 +27,7 @@ export default function Footer() {
                     <Link to="/" className="hover:text-indigo-500">Home</Link>
                   </li>
                   <li>
-                    <Link to="/about" className="hover:text-indigo-500">About Us</Link>
+                    <Link to="/company" className="hover:text-indigo-500">About Us</Link>
                   </li>
                   <li>
                     <Link to="/services" className="hover:text-indigo-500">Services</Link>
@@ -40,7 +41,7 @@ export default function Footer() {
                 <h2 className="text-lg font-semibold mb-4">Contact Us</h2>
                 <div className="flex items-center mb-2">
                   {/* <MailIcon className="h-5 w-5 mr-2" /> */}
-                  <span>info@example.com</span>
+                  <span>info@infinitymr.com</span>
                 </div>
                 <div className="flex items-center">
                   <PhoneIcon className="h-5 w-5 mr-2" />

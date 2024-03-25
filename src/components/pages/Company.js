@@ -7,7 +7,7 @@ const CompanyPage = () => {
       {/* Company Header Section */}
       <div className="bg-gray-900 text-white py-12">
         <div className="container mx-auto px-4">
-          <h1 className="text-4xl font-bold mb-4">Welcome to Our Market Research Company</h1>
+          <h1 className="text-4xl font-bold mb-4">Welcome to Infinity Market Reseach</h1>
           <p className="text-lg leading-relaxed">Unlocking Insights for Your Business Success</p>
         </div>
       </div>
@@ -16,7 +16,7 @@ const CompanyPage = () => {
       <div className="container mx-auto px-4 py-12 flex flex-wrap items-center">
         <div className="w-full md:w-1/2 mb-8 md:mb-0">
           {/* Display the company image */}
-          <img src={aboutImage} alt="About Us" className="rounded-lg w-full h-auto" />
+          <img src={aboutImage} alt="About-Infinity Market Reseach" className="rounded-lg w-full h-auto" />
         </div>
         <div className="w-full md:w-1/2 md:pl-8">
           <h2 className="text-3xl font-bold mb-4">About Us</h2>
@@ -108,7 +108,7 @@ const CompanyPage = () => {
   </div>
   <div className="w-full md:w-1/2 mb-8 md:mb-0">
     {/* Display the company image */}
-    <img src={promiseimage} alt="About Us" className="rounded-lg w-full h-auto" />
+    <img src={promiseimage} alt="About Infinity Market Reseach" className="rounded-lg w-full h-auto" />
   </div>
  
 </div>
