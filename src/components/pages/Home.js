@@ -1,7 +1,7 @@
 import MarketPlace from './MarketPlace'
-import Stats from '../common/Stats'
-import Testimonials from '../common/Testimonials'
-import OurClients from '../common/OurClients'
+// import Stats from '../common/Stats'
+// import Testimonials from '../common/Testimonials'
+// import OurClients from '../common/OurClients'
 import { Link } from 'react-router-dom'
 import React from 'react';
 
@@ -72,9 +72,9 @@ export default function Example() {
         </div>
       </div>
       <MarketPlace />
-      <Stats />
+      {/* <Stats />
       <Testimonials />
-      <OurClients />
+      <OurClients /> */} 
     </div>
   );
 }

@@ -1,50 +1,50 @@
-import React, { useState,useEffect } from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import Sidebar from './Sidebar';
+
+import Nav from './Nav';
+import { useState } from "react";
+
 import { EditorState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg"; // Import Draft.js Editor
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css"; // Import Draft.js styles
 
-const AddReportForm = () => {
+
+const Dashboard = () => {
   const [editorStates, setEditorStates] = useState({}); // State variable to manage editor states
   const [editorValue, setEditorValue] = useState(""); // State to hold the editor value
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
   
-  const [authors, setAuthors] = useState([]);
-  const [continents, setContinents] = useState([]);
   const [errors, setErrors] = useState({});
-  useEffect(() => {
-    fetchAuthors();
-    fetchContinents();
-  }, []);
+ 
 
-  const fetchAuthors = async () => {
-    try {
-      const response = await fetch("http://localhost:8000/api/v1/reports");
-      if (!response.ok) {
-        throw new Error("Failed to fetch authors");
-      }
-      const data = await response.json();
-      setAuthors(data.authors);
-    } catch (error) {
-      console.error("Error fetching authors:", error);
-    }
-  };
-
-  const fetchContinents = async () => {
-    try {
-      const response = await fetch("http://localhost:8000/api/v1/reports");
-      if (!response.ok) {
-        throw new Error("Failed to fetch continents");
-      }
-      const data = await response.json();
-      setContinents(data.continents);
-    } catch (error) {
-      console.error("Error fetching continents:", error);
-    }
-  };
-  
+  const continents = [
+    { id: 1, name: 'Asia' },
+    { id: 2, name: 'Africa' },
+    { id: 3, name: 'North America' },
+    // Add more continents as needed
+  ];
+  const reportTypes = [
+    { id: 1, name: 'Aerospace & Defense' },
+    { id: 2, name: 'Agriculture' },
+    { id: 3, name: 'Automotive & Transportation' },
+    { id: 4, name: 'Building & Construction' },
+    { id: 5, name: 'Chemicals & Materials' },
+    { id: 6, name: 'Consumer Goods' },
+    { id: 7, name: 'Electronics & Semiconductors' },
+    { id: 8, name: 'Energy & Natural Resources' },
+    { id: 9, name: 'Food & Beverages' },
+    { id: 10, name: 'Healthcare & Life Sciences' },
+    { id: 11, name: 'Heavy Engineering' },
+    // Add more report types as needed
+  ];
+  const authors = [
+    { id: 1, name: 'Infinitymarketresearch' },
+    { id: 2, name: 'Gajanan' },
+    // Add more authors as needed
+  ];
+ 
 
 
   const handleChangeEditorState = (newState) => {
@@ -53,66 +53,94 @@ const AddReportForm = () => {
 
 
 
- 
-  
+  const uploadFile = async (file) => {
+    try {
+      const formData = new FormData();
+      formData.append('file_name', file); // Use the correct key for file upload
+      const token = localStorage.getItem('token'); // Assuming you store the token in localStorage
+
+      const response = await fetch('http://localhost:8000/api/v1/upload/', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Authorization': `Bearer ${token}`, // Include the token in the Authorization header
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to upload file'); // Provide a more specific error message
+      }
+
+      const data = await response.json();
+      console.log('File uploaded successfully:', data);
+      return data;
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      throw error;
+    }
+  };
+
   const logFormValues = async (e) => {
     e.preventDefault();
 
-    const inputFields = document.querySelectorAll("input, select, textarea");
-    const formValues = {};
-
-    inputFields.forEach((field) => {
-      formValues[field.name] = field.value;
-    });
-
-    // Handle Draft.js editor fields
-    const editorFields = document.querySelectorAll(".editorClassName");
-    editorFields.forEach((editor) => {
-      const fieldName = editor.getAttribute("name");
-      const editorState = editorStates[fieldName];
-      if (editorState) {
-        const contentState = editorState.getCurrentContent();
-        const editorContent = contentState.getPlainText();
-        formValues[fieldName] = editorContent.trim();
-      }
-    });
+    const form = e.target;
+    const formData = new FormData(form);
 
     try {
+      // Upload file first
+      const fileInput = document.getElementById('file_name');
+      if (fileInput && fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        const uploadedFileData = await uploadFile(file); // Upload the file
+        formData.append('file_name', uploadedFileData.file_name); // Assuming API returns the filename
+      }
+
       const token = localStorage.getItem('token'); // Assuming you store the token in localStorage
-    
+
       const response = await fetch('http://localhost:8000/api/v1/reports/', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`, // Include the token in the Authorization header
         },
-        body: JSON.stringify(formValues),
+        body: formData,
       });
-    
+
       if (!response.ok) {
         const responseData = await response.json();
         setErrors({ message: responseData.message || 'An error occurred' });
         throw new Error('Network response was not ok');
       }
-    
+
       const responseData = await response.json();
       console.log('Response from server:', responseData);
-    
+
       alert("Form submitted successfully!");
     } catch (error) {
       console.error('There was an error submitting the form:', error);
       alert("There was an error submitting the form. Please try again later.");
     }
   };
-
-  
-  
-
+ 
   return (
-    <div className="bg-gray-900 min-h-screen py-12">
+    <div className="flex">
+      {/* Sidebar (Hidden on Small Screens) */}
+      <div className="md:w-64 md:flex-shrink-0">
+        <Sidebar />
+      </div>
+
+      {/* Main Content */}
+      <div className="flex flex-col flex-1 overflow-auto">
+       
+        <Nav />
+
+        <div className="bg-gray-200 min-h-screen py-12 ">
+     
       <div className="container mx-auto px-2 mb-16">
+     
         <div className="isolate bg-white px-6 py-12 sm:py-10 lg:px-12 ">
+          
           <form onSubmit={logFormValues} className="mx-auto text-gray-900">
+            
             <>
               <h2 className="text-2xl text-gray-900 font-bold mb-4">
                 Report Details
@@ -259,10 +287,9 @@ const AddReportForm = () => {
                         className="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
                       >
                         <option value="">Select Report Type</option>
-                        {/* Add options dynamically from a list */}
-                        <option value="option1">Option 1</option>
-                        <option value="option2">Option 2</option>
-                        <option value="option3">Option 3</option>
+                        {reportTypes.map(reportType => (
+          <option key={reportType.id} value={reportType.id}>{reportType.name}</option>
+        ))}
                       </select>
                       {errors.report_type && (
         <div className="text-red-500 text-xs mt-1">{errors.message}</div>
@@ -444,11 +471,9 @@ const AddReportForm = () => {
           className="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
         >
           <option value="">Select Author</option>
-          {authors.map((author) => (
-            <option key={author.id} value={author.id}>
-              {author.name}
-            </option>
-          ))}
+          {authors.map(author => (
+          <option key={author.id} value={author.id}>{author.name}</option>
+        ))}
         </select>
         {errors.author && (
         <div className="text-red-500 text-xs mt-1">{errors.message}</div>
@@ -466,11 +491,9 @@ const AddReportForm = () => {
           className="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
         >
           <option value="">Select Continent</option>
-          {continents.map((continent) => (
-            <option key={continent.id} value={continent.name}>
-              {continent.name}
-            </option>
-          ))}
+          {continents.map(continent => (
+          <option key={continent.id} value={continent.id}>{continent.name}</option>
+        ))}
         </select>
         {errors.continent && (
         <div className="text-red-500 text-xs mt-1">{errors.message}</div>
@@ -486,9 +509,9 @@ const AddReportForm = () => {
                       </label>
                       <input
                         type="file"
-                        id="images"
-                        name="images"
-                        
+                     
+                        name="file_name"
+                        onChange={uploadFile}
                         className="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
                       />
                        {errors.images && (
@@ -623,16 +646,16 @@ const AddReportForm = () => {
         </div>
       </div>
       {/* Back to dashboard link */}
-      <div className="absolute top-0 left-0 mt-4 ml-14">
-        <Link
-          to="/dashboard"
-          className="text-sm text-indigo-600 hover:underline"
-        >
-          Back to Dashboard
-        </Link>
+    
+    </div>
       </div>
     </div>
   );
 };
 
-export default AddReportForm;
+export default Dashboard;
+
+
+
+
+

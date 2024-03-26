@@ -3,7 +3,7 @@ import Sidebar from './Sidebar';
 import Header from '../components/common/Header';
 import Nav from './Nav';
 
-const Payments = () => {
+const Dashboard = () => {
   return (
     <div className="flex">
       {/* Sidebar (Hidden on Small Screens) */}
@@ -17,9 +17,9 @@ const Payments = () => {
         <Nav />
 
         <div className="p-6">
-          <h1 className="text-2xl font-semibold mb-4">Payments Section Here</h1>
+          <h1 className="text-2xl font-semibold mb-4">Dashboard Section Here</h1>
           <p className="text-lg">
-            {/* Content of the Payments */}
+            {/* Content of the Dashboard */}
           </p>
         </div>
       </div>
@@ -27,4 +27,4 @@ const Payments = () => {
   );
 };
 
-export default Payments;
+export default Dashboard;

@@ -1,17 +1,30 @@
-import React from 'react'
+import React from 'react';
+import Sidebar from './Sidebar';
+import Header from '../components/common/Header';
+import Nav from './Nav';
 
 const Profile = () => {
   return (
-    <div className="flex-1 overflow-auto">
-    {/* Main Content */}
-    <div className="p-6">
-      <h1 className="text-2xl font-semibold mb-4">Welcome to Dashboard</h1>
-      <p className="text-lg">
-        
-      </p>
-    </div>
-  </div>
-  )
-}
+    <div className="flex">
+      {/* Sidebar (Hidden on Small Screens) */}
+      <div className="md:w-64 md:flex-shrink-0">
+        <Sidebar />
+      </div>
 
-export default Profile
+      {/* Main Content */}
+      <div className="flex flex-col flex-1 overflow-auto">
+       
+        <Nav />
+
+        <div className="p-6">
+          <h1 className="text-2xl font-semibold mb-4">Profile Section Here</h1>
+          <p className="text-lg">
+            {/* Content of the Profile */}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Profile;

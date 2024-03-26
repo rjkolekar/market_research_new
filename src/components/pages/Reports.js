@@ -366,9 +366,9 @@ const ReportPage = () => {
       </div>
       
     </div>
-    <Stats />
+    {/* <Stats />
     <Testimonials />
-    <OurClients />
+    <OurClients /> */}
 </>
   );
 };

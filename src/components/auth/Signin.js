@@ -39,7 +39,7 @@ export default function Example() {
       const responseData = await response.json();
       const token = responseData.data.token.access_token; // Assuming the token is returned in the response
       localStorage.setItem("token", token); // Store the token in localStorage
-console.log(token)
+      console.log(token)
       const userData = { username };
       localStorage.setItem("userData", JSON.stringify(userData));
       // If login is successful, redirect the user
