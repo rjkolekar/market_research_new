@@ -180,7 +180,7 @@ const ReportPage = () => {
 
   return (
     <>
-      <div className=" mx-auto px-20 py-8">
+      <div className=" mx-auto px-10 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-4 lg:gap-8">
           {/* Sidebar for categories */}
           {!selectedReport && (
