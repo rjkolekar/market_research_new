@@ -297,7 +297,7 @@ const ReportPage = () => {
                   </h2>
                   {/* <p className="text-gray-700 text-sm mb-4">{selectedReport.content}</p> */}
                   <div className="mt-4 bg-white p-4  rounded-md shadow-md">
-                  <nav className="-mb-px bg-white flex space-x-8 items-center" aria-label="Tabs">
+                  <nav className="-mb-px bg-white flex flex-wrap justify-center lg:justify-start space-x-0 lg:space-x-8 items-center" aria-label="Tabs">
   <button
     onClick={() => handleTabChange("tableOfContents")}
     className={`px-3 py-2 text-md font-medium text-black border-1 ${
@@ -308,7 +308,7 @@ const ReportPage = () => {
   >
     Table of Contents
   </button>
-  <div className="border-l border-gray-300 h-6"></div>
+  <div className="border-l border-gray-300 h-6 lg:hidden"></div>
   <button
     onClick={() => handleTabChange("description")}
     className={`px-3 py-2 text-md font-medium text-black border-1  ${
@@ -319,7 +319,7 @@ const ReportPage = () => {
   >
     Description
   </button>
-  <div className="border-l border-gray-300 h-6"></div>
+  <div className="border-l border-gray-300 h-6 lg:hidden"></div>
   <button
     onClick={() => handleTabChange("InfoGraphics")}
     className={`px-3 py-2 text-md font-medium text-black  ${
@@ -330,7 +330,7 @@ const ReportPage = () => {
   >
     InfoGraphics
   </button>
-  <div className="border-l border-gray-300 h-6"></div>
+  <div className="border-l border-gray-300 h-6 lg:hidden"></div>
   <button
     onClick={() => handleTabChange("request_sample")}
     className={`px-3 py-2 text-md font-medium text-black ${
@@ -341,7 +341,7 @@ const ReportPage = () => {
   >
     Request Sample
   </button>
-  <div className="border-l border-gray-300 h-6"></div>
+  <div className="border-l border-gray-300 h-6 lg:hidden"></div>
   <button
     onClick={() => handleTabChange("methodology")}
     className={`px-3 py-2 text-md font-medium text-black ${
@@ -353,6 +353,7 @@ const ReportPage = () => {
     Methodology
   </button>
 </nav>
+
 
                     <hr className="my-2 border-gray-300 mb-6" />
 
