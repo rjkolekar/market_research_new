@@ -308,6 +308,7 @@ const ReportPage = () => {
   >
     Table of Contents
   </button>
+  <div className="border-l border-gray-300 h-6"></div>
   <div className="border-l border-gray-300 h-6 lg:hidden"></div>
   <button
     onClick={() => handleTabChange("description")}
@@ -319,6 +320,7 @@ const ReportPage = () => {
   >
     Description
   </button>
+  <div className="border-l border-gray-300 h-6"></div>
   <div className="border-l border-gray-300 h-6 lg:hidden"></div>
   <button
     onClick={() => handleTabChange("InfoGraphics")}
@@ -330,6 +332,7 @@ const ReportPage = () => {
   >
     InfoGraphics
   </button>
+  <div className="border-l border-gray-300 h-6"></div>
   <div className="border-l border-gray-300 h-6 lg:hidden"></div>
   <button
     onClick={() => handleTabChange("request_sample")}
@@ -341,6 +344,7 @@ const ReportPage = () => {
   >
     Request Sample
   </button>
+  <div className="border-l border-gray-300 h-6"></div>
   <div className="border-l border-gray-300 h-6 lg:hidden"></div>
   <button
     onClick={() => handleTabChange("methodology")}
