@@ -25,8 +25,9 @@ const Layout = () => {
         </div>
       </div>
       {/* <MarketPlace /> */}
-      <Stats />
+      
       <Testimonials />
+      <Stats />
       <OurClients />
       <Newsletter />
       <Footer />

@@ -17,7 +17,9 @@ import Contact from './components/Contact';
 import Signin from './components/auth/Signin';
 import Signup from './components/auth/Signup';
 import PrivateComponent from './PrivateComponent';
-
+import Disclaimer from './components/pages/Disclaimer';
+import Faqs from './components/pages/Faqs'
+import TermsAndConditions from './components/pages/TermsAndConditions';
 const App = () => {
   return (
     <Router>
@@ -28,6 +30,11 @@ const App = () => {
           <Route path="products" element={<Products />} />
           <Route path="reports" element={<Reports />} />
           <Route path="company" element={<Company />} />
+          <Route path="disclaimer" element={<Disclaimer />} />
+          <Route path="faqs" element={<Faqs />} />
+          <Route path="termsandconditons" element={<TermsAndConditions />} />
+
+
           <Route path="marketplace" element={<MarketPlace />} />
           <Route path="contact" element={<Contact />} />
         </Route>

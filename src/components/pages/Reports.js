@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import Stats from '../common/Stats'
 import Testimonials from '../common/Testimonials'
 import OurClients from '../common/OurClients'
+import { useNavigate } from 'react-router-dom';
 const ReportPage = () => {
   // Sample report data
+  const navigate = useNavigate()
   const [reports, setReports] = useState([
     {
       id: 1,
@@ -11,7 +13,7 @@ const ReportPage = () => {
       industry: 'Defense',
       tableOfContents: 'Table of Contents: Market Analysis 2023',
       description: 'Description: Market Analysis 2023',
-      highlights: 'Highlights: Market Analysis 2023',
+      InfoGraphics: 'InfoGraphics: Market Analysis 2023',
       methodology: 'Methodology: Market Analysis 2023',
       price: '$400',
       content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget tortor vel odio interdum fermentum. Sed vel libero eget nulla placerat ultrices. Nam aliquet sem at quam tempus consequat.'
@@ -22,7 +24,7 @@ const ReportPage = () => {
       industry: 'Aerospace & Defense',
       tableOfContents: 'Table of Contents: Technology Trends Report',
       description: 'Description: Technology Trends Report',
-      highlights: 'Highlights: Technology Trends Report',
+      InfoGraphics: 'InfoGraphics: Technology Trends Report',
       methodology: 'Methodology: Technology Trends Report',
       price: '$320',
       content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget tortor vel odio interdum fermentum. Sed vel libero eget nulla placerat ultrices. Nam aliquet sem at quam tempus consequat.'
@@ -33,7 +35,7 @@ const ReportPage = () => {
       industry: 'Defense',
       tableOfContents: 'Table of Contents: Market Analysis 2023',
       description: 'Description: Market Analysis 2023',
-      highlights: 'Highlights: Market Analysis 2023',
+      InfoGraphics: 'InfoGraphics: Market Analysis 2023',
       methodology: 'Methodology: Market Analysis 2023',
       price: '$300',
       content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget tortor vel odio interdum fermentum. Sed vel libero eget nulla placerat ultrices. Nam aliquet sem at quam tempus consequat.'
@@ -44,7 +46,7 @@ const ReportPage = () => {
       industry: 'Aerospace & Defense',
       tableOfContents: 'Table of Contents: Technology Trends Report',
       description: 'Description: Technology Trends Report',
-      highlights: 'Highlights: Technology Trends Report',
+      InfoGraphics: 'InfoGraphics: Technology Trends Report',
       methodology: 'Methodology: Technology Trends Report',
       price: '$200',
       content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget tortor vel odio interdum fermentum. Sed vel libero eget nulla placerat ultrices. Nam aliquet sem at quam tempus consequat.'
@@ -55,7 +57,7 @@ const ReportPage = () => {
       industry: 'Defense',
       tableOfContents: 'Table of Contents: Market Analysis 2023',
       description: 'Description: Market Analysis 2023',
-      highlights: 'Highlights: Market Analysis 2023',
+      InfoGraphics: 'InfoGraphics: Market Analysis 2023',
       methodology: 'Methodology: Market Analysis 2023',
       price: '$100',
       content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget tortor vel odio interdum fermentum. Sed vel libero eget nulla placerat ultrices. Nam aliquet sem at quam tempus consequat.'
@@ -66,7 +68,7 @@ const ReportPage = () => {
       industry: 'Aerospace & Defense',
       tableOfContents: 'Table of Contents: Technology Trends Report',
       description: 'Description: Technology Trends Report',
-      highlights: 'Highlights: Technology Trends Report',
+      InfoGraphics: 'InfoGraphics: Technology Trends Report',
       methodology: 'Methodology: Technology Trends Report',
       price: '$199',
       content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget tortor vel odio interdum fermentum. Sed vel libero eget nulla placerat ultrices. Nam aliquet sem at quam tempus consequat.'
@@ -77,7 +79,7 @@ const ReportPage = () => {
       industry: 'Defense',
       tableOfContents: 'Table of Contents: Market Analysis 2023',
       description: 'Description: Market Analysis 2023',
-      highlights: 'Highlights: Market Analysis 2023',
+      InfoGraphics: 'InfoGraphics: Market Analysis 2023',
       methodology: 'Methodology: Market Analysis 2023',
       price: '$99',
       content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget tortor vel odio interdum fermentum. Sed vel libero eget nulla placerat ultrices. Nam aliquet sem at quam tempus consequat.'
@@ -88,7 +90,7 @@ const ReportPage = () => {
       industry: 'Aerospace & Defense',
       tableOfContents: 'Table of Contents: Technology Trends Report',
       description: 'Description: Technology Trends Report',
-      highlights: 'Highlights: Technology Trends Report',
+      InfoGraphics: 'InfoGraphics: Technology Trends Report',
       methodology: 'Methodology: Technology Trends Report',
       price: '$99',
       content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget tortor vel odio interdum fermentum. Sed vel libero eget nulla placerat ultrices. Nam aliquet sem at quam tempus consequat.'
@@ -136,6 +138,11 @@ const ReportPage = () => {
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
+
+  
+  const handleReqSample = () =>{
+    navigate("/contact");
+  }
 
   const filteredReports = selectedIndustry ? reports.filter(report => report.industry === selectedIndustry) : reports;
 
@@ -252,13 +259,22 @@ const ReportPage = () => {
                       Description
                     </button>
                     <button
-                      onClick={() => handleTabChange('highlights')}
-                      className={`px-3 py-2 text-sm font-medium ${activeTab === 'highlights'
+                      onClick={() => handleTabChange('InfoGraphics')}
+                      className={`px-3 py-2 text-sm font-medium ${activeTab === 'InfoGraphics'
                           ? 'text-indigo-600 border-indigo-600'
                           : 'text-gray-500 border-transparent hover:text-gray-700 hover:border-gray-300'
                         }`}
                     >
-                      Highlights
+                      InfoGraphics
+                    </button>
+                    <button
+                      onClick={handleReqSample}
+                      className={`px-3 py-2 text-sm font-medium ${activeTab === 'methodology'
+                          ? 'text-indigo-600 border-indigo-600'
+                          : 'text-gray-500 border-transparent hover:text-gray-700 hover:border-gray-300'
+                        }`}
+                    >
+                      Request Sample
                     </button>
                     <button
                       onClick={() => handleTabChange('methodology')}
@@ -281,8 +297,11 @@ const ReportPage = () => {
                         {activeTab === 'description' && (
                           <div>{selectedReport.content}</div>
                         )}
-                        {activeTab === 'highlights' && (
-                          <div>{selectedReport.highlights}</div>
+                        {activeTab === 'InfoGraphics' && (
+                          <div>{selectedReport.InfoGraphics}</div>
+                        )}
+                          {activeTab === 'request_sample' && (
+                          <div>{selectedReport.RequestSample}</div>
                         )}
                         {activeTab === 'methodology' && (
                           <div>{selectedReport.methodology}</div>
